@@ -63,7 +63,11 @@ pdfjsLib.getDocument(pdfUrl).promise.then(function (pdf) {
     ctx.lineTo(x, lineEndY);
     ctx.stroke();
 
-    console.log("Clicked at coordinates:", x, y);
+    // console.log("Clicked at coordinates:", x, y);
+    if (clickCount==0) {
+      console.log("Marker 1 Co-ordinates :",x,y)}
+    else{
+      console.log("Marker 2 Co-ordinates :",x,y)}
 
     clickCount++;
   });
