@@ -6,6 +6,10 @@ const ctx = canvas.getContext("2d");
 const pdfUrl = "ET.pdf";
 const scale = 1; // Adjust the scale factor as needed
 
+// Pen icon image
+const penImage = new Image();
+penImage.src = "pen.png";
+
 pdfjsLib.getDocument(pdfUrl).promise.then(function (pdf) {
   const numPages = pdf.numPages;
   const renderPromises = [];
@@ -31,7 +35,7 @@ pdfjsLib.getDocument(pdfUrl).promise.then(function (pdf) {
 
   console.log("PDF rendered on the canvas!");
 
-  // Add click event listener to draw circles and log coordinates
+  // Add click event listener to draw lines and log coordinates
   let clickCount = 0;
   canvas.addEventListener("click", function (event) {
     if (clickCount >= 2) {
@@ -42,18 +46,30 @@ pdfjsLib.getDocument(pdfUrl).promise.then(function (pdf) {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-    const color = clickCount === 0 ? "red" : "green";
+    // Specify line height
+    const lineHeight = 10;
 
-    ctx.fillStyle = color;
+    // Calculate line start and end coordinates
+    const lineStartY = Math.max(0, y - lineHeight / 2);
+    const lineEndY = Math.min(canvas.height, y + lineHeight / 2);
+
+    // Determine line color based on click count
+    const lineColor = clickCount === 0 ? "green" : "red";
+
+    // Draw a vertical line with the specified color
+    ctx.strokeStyle = lineColor;
     ctx.beginPath();
-    ctx.arc(x, y, 5, 0, Math.PI * 2);
-    ctx.fill();
+    ctx.moveTo(x, lineStartY);
+    ctx.lineTo(x, lineEndY);
     ctx.stroke();
 
     console.log("Clicked at coordinates:", x, y);
 
     clickCount++;
   });
+
+  // Set the cursor to the pen icon
+  canvas.style.cursor = `url(${penImage.src}), auto`;
 }).catch(function (error) {
   console.error("Error occurred while rendering the PDF:", error);
 });
