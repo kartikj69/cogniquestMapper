@@ -3,12 +3,8 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 // Load and convert the PDF
-const pdfUrl = "ET.pdf";
+const pdfUrl = "EE.pdf";
 const scale = 1; // Adjust the scale factor as needed
-
-// Pen icon image
-const penImage = new Image();
-penImage.src = "pen.png";
 
 pdfjsLib.getDocument(pdfUrl).promise.then(function (pdf) {
   const numPages = pdf.numPages;
@@ -63,17 +59,10 @@ pdfjsLib.getDocument(pdfUrl).promise.then(function (pdf) {
     ctx.lineTo(x, lineEndY);
     ctx.stroke();
 
-    // console.log("Clicked at coordinates:", x, y);
-    if (clickCount==0) {
-      console.log("Marker 1 Co-ordinates :",x,y)}
-    else{
-      console.log("Marker 2 Co-ordinates :",x,y)}
+    console.log("Clicked at coordinates:", x, y);
 
     clickCount++;
   });
-
-  // Set the cursor to the pen icon
-  canvas.style.cursor = `url(${penImage.src}), auto`;
 }).catch(function (error) {
   console.error("Error occurred while rendering the PDF:", error);
 });
